@@ -9,6 +9,6 @@ function loginApi(data) {
 function logoutApi(){
   return $axios({
     'url': '/employee/logout',
-    'method': 'post',
+    'method': 'post'
   })
 }

@@ -21,11 +21,18 @@ public class LoginCheckFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        String requestURI = request.getRequestURI();
+
+
+
+
+
+
+
         log.info("拦截到请求：{}", request.getRequestURI());
         //先放行
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
 
-        //P17 看到此处
 
     }
 }

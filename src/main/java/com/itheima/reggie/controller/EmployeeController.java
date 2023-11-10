@@ -88,6 +88,14 @@ public class EmployeeController {
         employee.setCreateUser(empId);
         employee.setUpdateUser(empId);
 
+        //第一种方式：在controller方法中加入try catch进行异常捕获 (不建议使用)
+        //避免系统程序出现抛出异常 Duplicate entry xxx for key xxx
+      //  try{
+      //      employeeService.save(employee);
+      //  }catch (Exception e){
+      //      R.error("新增员工失败！");
+      //  }
+
         employeeService.save(employee);
 
         return R.success("新增员工成功！");

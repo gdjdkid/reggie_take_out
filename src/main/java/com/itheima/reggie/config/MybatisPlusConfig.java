@@ -17,6 +17,9 @@
 package com.itheima.reggie.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @ClassName MybatisPlusConfig
@@ -25,16 +28,14 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
  * @Date 2023/11/12 22:44
  * @Version 1.0
  **/
+@Configuration
 public class MybatisPlusConfig {
 
     //拦截器
+    @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
-
-
-
-
-
-
-        return null;
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());  //PaginationInnerInterceptor分页拦截器
+        return mybatisPlusInterceptor;
     }
 }

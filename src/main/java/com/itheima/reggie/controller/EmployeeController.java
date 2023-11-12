@@ -1,10 +1,12 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -90,21 +92,45 @@ public class EmployeeController {
 
         //第一种方式：在controller方法中加入try catch进行异常捕获 (不建议使用)
         //避免系统程序出现抛出异常 Duplicate entry xxx for key xxx
-      //  try{
-      //      employeeService.save(employee);
-      //  }catch (Exception e){
-      //      R.error("新增员工失败！");
-      //  }
+        //  try{
+        //      employeeService.save(employee);
+        //  }catch (Exception e){
+        //      R.error("新增员工失败！");
+        //  }
 
         employeeService.save(employee);
 
         return R.success("新增员工成功！");
     }
 
+    /**
+     * @param page
+     * @param pageSize
+     * @param name
+     * @return com.itheima.reggie.common.R<com.baomidou.mybatisplus.extension.plugins.pagination.Page>
+     * @author Roy
+     * @Description 员工信息分页查询
+     * @Date 2023/11/12 23:13
+     **/
+    @GetMapping("/page")
+    public R<Page> page(int page, int pageSize, String name) {
+        log.info("page={},pageSize={},name={}", page, pageSize, name);
 
+        //构造 分页构造器
+        Page pageInfo = new Page(page, pageSize);
 
+        //构造 条件构造器
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper();
+        //添加过滤条件
+        queryWrapper.like(StringUtils.isNotEmpty(name), Employee::getName, name);
+        //添加排序条件
+        queryWrapper.orderByDesc(Employee::getUpdateTime);
 
+        //执行查询
+        employeeService.page(pageInfo,queryWrapper);    //翻页查询
 
+        return R.success(pageInfo);
+    }
 
 
 }
